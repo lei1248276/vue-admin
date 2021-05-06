@@ -30,20 +30,20 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Role':'New Role'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑角色':'新增角色'">
       <el-form :model="role" label-width="80px" label-position="left">
-        <el-form-item label="Name">
-          <el-input v-model="role.name" placeholder="Role Name" />
+        <el-form-item label="名字">
+          <el-input v-model="role.name" placeholder="角色名字" />
         </el-form-item>
-        <el-form-item label="Desc">
+        <el-form-item label="描述">
           <el-input
             v-model="role.description"
             :autosize="{ minRows: 2, maxRows: 4}"
             type="textarea"
-            placeholder="Role Description"
+            placeholder="角色描述"
           />
         </el-form-item>
-        <el-form-item label="Menus">
+        <el-form-item label="选项">
           <el-tree
             ref="tree"
             :check-strictly="checkStrictly"
@@ -56,8 +56,8 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">Cancel</el-button>
-        <el-button type="primary" @click="confirmRole">Confirm</el-button>
+        <el-button type="danger" @click="dialogVisible=false">取消</el-button>
+        <el-button type="primary" @click="confirmRole">确认</el-button>
       </div>
     </el-dialog>
   </div>
@@ -173,9 +173,9 @@ export default {
       });
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the role?', 'Warning', {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
+      this.$confirm('确认要删除此角色?', '提醒', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
         type: 'warning'
       })
         .then(async() => {
@@ -183,7 +183,7 @@ export default {
           this.rolesList.splice($index, 1);
           this.$message({
             type: 'success',
-            message: 'Delete succed!'
+            message: '删除成功'
           });
         })
         .catch(err => { console.error(err); });
@@ -228,12 +228,12 @@ export default {
       const { description, key, name } = this.role;
       this.dialogVisible = false;
       this.$notify({
-        title: 'Success',
+        title: '成功',
         dangerouslyUseHTMLString: true,
         message: `
-            <div>Role Key: ${key}</div>
-            <div>Role Name: ${name}</div>
-            <div>Description: ${description}</div>
+            <div>角色级别: ${key}</div>
+            <div>角色名字: ${name}</div>
+            <div>描述: ${description}</div>
           `,
         type: 'success'
       });

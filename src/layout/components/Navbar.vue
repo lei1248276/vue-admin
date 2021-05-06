@@ -5,6 +5,13 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
+      <template v-if="device!=='mobile'">
+        <search id="header-search" class="right-menu-item" />
+
+        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+
+      </template>
+
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img src="@/assets/avatar.jpg" class="user-avatar">
@@ -30,18 +37,23 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Breadcrumb from '@/components/Breadcrumb';
-import Hamburger from '@/components/Hamburger';
+import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
+import Hamburger from '@/components/Hamburger/Hamburger';
+import Screenfull from '@/components/Screenfull/Screenfull';
+import Search from '@/components/HeaderSearch/HeaderSearch';
 
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    Screenfull,
+    Search
   },
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'device'
     ])
   },
   methods: {

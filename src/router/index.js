@@ -32,6 +32,17 @@ import Layout from '@/layout/layout';
  */
 export const constantRoutes = [
   {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/redirect')
+      }
+    ]
+  },
+  {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -50,9 +61,54 @@ export const constantRoutes = [
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
+      component: () => import('@/views/dashboard/dashboard'),
       meta: { title: '首页', icon: 'dashboard', affix: true }
     }]
+  },
+
+  {
+    path: 'external-link',
+    component: Layout,
+    children: [
+      {
+        path: 'https://github.com/lei1248276/vue-admin',
+        meta: { title: '外链', icon: 'link' }
+      }
+    ]
+  }
+];
+
+export const asyncRoutes = [
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/user',
+    alwaysShow: true, // will always show the root menu
+    name: 'System',
+    meta: {
+      title: '系统管理',
+      icon: 'lock',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'user',
+        component: () => import('@/views/system/user'),
+        name: 'UserSystem',
+        meta: {
+          title: '用户管理'
+        }
+      },
+      {
+        path: 'permission',
+        component: () => import('@/views/system/permission'),
+        name: 'PermissionSystem',
+        meta: {
+          title: '权限管理',
+          roles: ['admin']
+        }
+      }
+    ]
   },
 
   {
@@ -145,40 +201,6 @@ export const constantRoutes = [
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
         meta: { title: '子菜单2' }
-      }
-    ]
-  }
-];
-
-export const asyncRoutes = [
-  {
-    path: '/system',
-    component: Layout,
-    redirect: '/system/user',
-    alwaysShow: true, // will always show the root menu
-    name: 'System',
-    meta: {
-      title: '系统管理',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
-    children: [
-      {
-        path: 'user',
-        component: () => import('@/views/system/user'),
-        name: 'UserSystem',
-        meta: {
-          title: '用户管理'
-        }
-      },
-      {
-        path: 'permission',
-        component: () => import('@/views/system/permission'),
-        name: 'PermissionSystem',
-        meta: {
-          title: '权限管理',
-          roles: ['admin']
-        }
       }
     ]
   },
