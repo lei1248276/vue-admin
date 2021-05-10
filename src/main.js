@@ -11,8 +11,9 @@ import App from './App';
 import store from './store';
 import router from './router';
 
-import '@/icons'; // icon
-import '@/permission'; // permission control
+import './icons'; // icon
+import './permission'; // permission control
+import * as filters from './filters'; // 全局filters
 
 /**
  * If you don't want to use mock-server
@@ -28,6 +29,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 Vue.use(ElementUI);
+
+// 注册全局filters
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key]);
+});
 
 Vue.config.productionTip = false;
 

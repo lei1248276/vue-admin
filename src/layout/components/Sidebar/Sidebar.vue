@@ -3,6 +3,7 @@
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
+        ref="menu"
         :default-active="activeMenu"
         :collapse="isCollapse"
         :background-color="variables.menuBg"
@@ -11,6 +12,7 @@
         :active-text-color="variables.menuActiveText"
         :collapse-transition="false"
         mode="vertical"
+        @open="onOpen"
       >
         <sidebar-item
           v-for="route in permission_routes"
@@ -56,6 +58,15 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened;
+    }
+  },
+  methods: {
+    onOpen(index) {
+      const opened = this.opened;
+      if (index.indexOf(opened) === -1) {
+        this.$refs.menu.close(opened);
+      }
+      this.opened = index;
     }
   }
 };

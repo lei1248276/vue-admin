@@ -92,6 +92,15 @@ export const asyncRoutes = [
     },
     children: [
       {
+        path: 'permission',
+        component: () => import('@/views/system/permission'),
+        name: 'PermissionSystem',
+        meta: {
+          title: '权限管理',
+          roles: ['admin']
+        }
+      },
+      {
         path: 'user',
         component: () => import('@/views/system/user'),
         name: 'UserSystem',
@@ -100,48 +109,13 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'permission',
-        component: () => import('@/views/system/permission'),
-        name: 'PermissionSystem',
+        path: 'data',
+        component: () => import('@/views/system/data'),
+        name: 'DataSystem',
         meta: {
-          title: '权限管理',
+          title: '数据管理',
           roles: ['admin']
         }
-      }
-    ]
-  },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '表格', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: '表单', icon: 'form' }
       }
     ]
   },
@@ -201,6 +175,41 @@ export const asyncRoutes = [
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
         meta: { title: '子菜单2' }
+      }
+    ]
+  },
+
+  {
+    path: '/form',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Form',
+        component: () => import('@/views/form/form'),
+        meta: { title: '表单', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/example',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'Example',
+    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'table',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: '表格', icon: 'table' }
+      },
+      {
+        path: 'tree',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'Tree', icon: 'tree' }
       }
     ]
   },

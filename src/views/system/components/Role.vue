@@ -20,12 +20,8 @@
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">
-            <svg-icon icon-class="edit" />
-          </el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">
-            <svg-icon icon-class="trash" />
-          </el-button>
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="handleEdit(scope)" />
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope)" />
         </template>
       </el-table-column>
     </el-table>
