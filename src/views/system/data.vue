@@ -17,7 +17,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download">
+      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         导出
       </el-button>
       <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
@@ -149,7 +149,7 @@
 <script>
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article';
 import waves from '@/directive/waves'; // waves directive
-// import { parseTime } from '@/utils';
+import { parseTime } from '@/utils';
 import Pagination from '@/components/Pagination/Pagination'; // secondary package based on el-pagination
 
 const calendarTypeOptions = [
@@ -347,16 +347,16 @@ export default {
         this.dialogPvVisible = true;
       });
     },
-    /* handleDownload() {
+    handleDownload() {
       this.downloadLoading = true;
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status'];
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status'];
+        const tHeader = ['时间', '标题', '国籍', '作者', '重要级', '状态'];
+        const filterVal = ['timestamp', 'title', 'type', 'author', 'importance', 'status'];
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: 'table-list'
+          filename: 'data-list'
         });
         this.downloadLoading = false;
       });
@@ -369,7 +369,7 @@ export default {
           return v[j];
         }
       }));
-    },*/
+    },
     getSortClass: function(key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending';

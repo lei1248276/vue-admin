@@ -11,7 +11,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download">
+      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         导出
       </el-button>
     </div>
@@ -49,7 +49,7 @@
 
       <el-table-column width="110" align="center" label="电话">
         <template slot-scope="{row}">
-          <span>{{ 188 + row.regexp_phone }}</span>
+          <span>{{ row.regexp_phone }}</span>
         </template>
       </el-table-column>
 
@@ -68,7 +68,7 @@
       <el-table-column min-width="280px" label="备注">
         <template slot-scope="{row}">
           <template v-if="row.edit">
-            <el-input v-model="row.title" class="edit-input" size="small" />
+            <el-input v-model="row.remark" class="edit-input" size="small" />
             <el-button
               class="cancel-btn"
               size="small"
@@ -79,7 +79,7 @@
               取消
             </el-button>
           </template>
-          <span v-else>{{ row.title }}</span>
+          <span v-else>{{ row.remark }}</span>
         </template>
       </el-table-column>
 
@@ -108,20 +108,74 @@
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+
+    <el-dialog title="添加" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="时间" prop="timestamp">
+          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="请选择时间" />
+        </el-form-item>
+        <el-form-item label="姓名" prop="cname">
+          <el-input v-model="temp.cname" />
+        </el-form-item>
+        <el-form-item label="性别" prop="boolean_sex">
+          <el-select v-model="temp.boolean_sex" class="filter-item" placeholder="请选择">
+            <el-option v-for="item in [true, false]" :key="item" :label="item?'男':'女'" :value="item" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="电话" prop="regexp_phone">
+          <el-input v-model.number="temp.regexp_phone" />
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="temp.email" />
+        </el-form-item>
+        <el-form-item label="所在地" prop="city">
+          <el-input v-model="temp.city" />
+        </el-form-item>
+        <el-form-item label="重要性">
+          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="createData()">
+          确认
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/article';
+import { createArticle, fetchList } from '@/api/article';
 import waves from '@/directive/waves'; // waves directive
-// import { parseTime } from '@/utils';
+import { parseTime } from '@/utils';
 import Pagination from '@/components/Pagination/Pagination';
+import { validPhoneNum, validEmail } from '@/utils/validate';
 
 export default {
   name: 'DataSystem',
   components: { Pagination },
   directives: { waves },
   data() {
+    const validatePhoneNum = (rule, value, callback) => {
+      if (!validPhoneNum(value)) {
+        callback(new Error('手机号码不合法！'));
+      } else {
+        callback();
+      }
+    };
+    const validateEmail = (rule, value, callback) => {
+      if (!validEmail(value)) {
+        callback(new Error('邮箱不合法！'));
+      } else {
+        callback();
+      }
+    };
     return {
       total: 0,
       list: null,
@@ -133,6 +187,26 @@ export default {
         cname: undefined
       },
       importanceOptions: [1, 2, 3],
+      temp: {
+        id: undefined,
+        importance: 1,
+        remark: '',
+        timestamp: new Date(),
+        name: '',
+        boolean_sex: '',
+        regexp_phone: '',
+        email: '',
+        city: ''
+      },
+      rules: {
+        timestamp: [{ type: 'date', required: true, message: '时间是必需的', trigger: 'change' }],
+        cname: [{ required: true, message: '名字是必需的', trigger: 'blur' }],
+        boolean_sex: [{ required: true, message: '性别是必需的', trigger: 'blur' }],
+        regexp_phone: [{ required: true, trigger: 'blur', validator: validatePhoneNum }],
+        email: [{ required: true, trigger: 'blur', validator: validateEmail }],
+        city: [{ required: true, message: '地址是必需的', trigger: 'blur' }]
+      },
+      dialogFormVisible: false,
       downloadLoading: false
     };
   },
@@ -147,13 +221,13 @@ export default {
       this.total = data.total;
       this.list = items.map(v => {
         this.$set(v, 'edit', false); // https://vuejs.org/v2/guide/reactivity.html
-        v.originalTitle = v.title; //  will be used when user click the cancel botton
+        v.originalRemark = v.remark; //  will be used when user click the cancel botton
         return v;
       });
       this.listLoading = false;
     },
     cancelEdit(row) {
-      row.title = row.originalTitle;
+      row.remark = row.originalRemark;
       row.edit = false;
       this.$message({
         message: '取消修改',
@@ -162,7 +236,7 @@ export default {
     },
     confirmEdit(row) {
       row.edit = false;
-      row.originalTitle = row.title;
+      row.originalRemark = row.remark;
       this.$message({
         message: '修改成功',
         type: 'success'
@@ -172,13 +246,68 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
+    resetTemp() {
+      this.temp = {
+        id: undefined,
+        importance: 1,
+        remark: '',
+        timestamp: new Date(),
+        name: '',
+        boolean_sex: '',
+        regexp_phone: '',
+        email: '',
+        city: '',
+        edit: false
+      };
+    },
     handleCreate() {
       this.resetTemp();
-      this.dialogStatus = 'create';
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate();
       });
+    },
+    createData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
+          this.temp.author = 'vue-element-admin';
+          createArticle(this.temp).then(() => {
+            this.list.unshift(this.temp);
+            console.log(this.list);
+            this.dialogFormVisible = false;
+            this.$notify({
+              title: '成功',
+              message: '添加成功',
+              type: 'success',
+              duration: 2000
+            });
+          });
+        }
+      });
+    },
+    handleDownload() {
+      this.downloadLoading = true;
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['时间', '重要级', '用户名', '性别', '电话', '邮箱', '所在地', '备注'];
+        const filterVal = ['timestamp', 'importance', 'cname', 'boolean_sex', 'regexp_phone', 'email', 'city', 'remark'];
+        const data = this.formatJson(filterVal);
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'user-list'
+        });
+        this.downloadLoading = false;
+      });
+    },
+    formatJson(filterVal) {
+      return this.list.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j]);
+        } else {
+          return v[j];
+        }
+      }));
     }
   }
 };
