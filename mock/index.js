@@ -5,12 +5,14 @@ const user = require('./user');
 const table = require('./table');
 const role = require('./role');
 const article = require('./article');
+const search = require('./remote-search');
 
 const mocks = [
   ...user,
   ...table,
   ...role,
-  ...article
+  ...article,
+  ...search
 ];
 
 // for front mock

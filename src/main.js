@@ -15,6 +15,9 @@ import './icons'; // icon
 import './permission'; // permission control
 import * as filters from './filters'; // 全局filters
 
+import waves from '@/directive/waves';// 引入指令并注册
+waves.install(Vue);
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

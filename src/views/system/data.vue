@@ -148,7 +148,6 @@
 
 <script>
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article';
-import waves from '@/directive/waves'; // waves directive
 import { parseTime } from '@/utils';
 import Pagination from '@/components/Pagination/Pagination'; // secondary package based on el-pagination
 
@@ -168,7 +167,6 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 export default {
   name: 'DataSystem',
   components: { Pagination },
-  directives: { waves },
   filters: {
     statusFilter(status) {
       const statusMap = {

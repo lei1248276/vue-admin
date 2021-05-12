@@ -83,7 +83,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="120">
+      <el-table-column align="center" label="操作" width="120">
         <template slot-scope="{row}">
           <el-button
             v-if="row.edit"
@@ -152,7 +152,6 @@
 
 <script>
 import { createArticle, fetchList } from '@/api/article';
-import waves from '@/directive/waves'; // waves directive
 import { parseTime } from '@/utils';
 import Pagination from '@/components/Pagination/Pagination';
 import { validPhoneNum, validEmail } from '@/utils/validate';
@@ -160,7 +159,6 @@ import { validPhoneNum, validEmail } from '@/utils/validate';
 export default {
   name: 'DataSystem',
   components: { Pagination },
-  directives: { waves },
   data() {
     const validatePhoneNum = (rule, value, callback) => {
       if (!validPhoneNum(value)) {
@@ -201,7 +199,7 @@ export default {
       rules: {
         timestamp: [{ type: 'date', required: true, message: '时间是必需的', trigger: 'change' }],
         cname: [{ required: true, message: '名字是必需的', trigger: 'blur' }],
-        boolean_sex: [{ required: true, message: '性别是必需的', trigger: 'blur' }],
+        boolean_sex: [{ required: true, message: '性别是必需的', trigger: 'change' }],
         regexp_phone: [{ required: true, trigger: 'blur', validator: validatePhoneNum }],
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
         city: [{ required: true, message: '地址是必需的', trigger: 'blur' }]
@@ -270,11 +268,12 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-          this.temp.author = 'vue-element-admin';
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp);
-            console.log(this.list);
+          const temp = this.temp;
+          temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
+          temp.author = 'vue-element-admin';
+          createArticle(temp).then(() => {
+            temp.originalRemark = temp.remark;
+            this.list.unshift(temp);
             this.dialogFormVisible = false;
             this.$notify({
               title: '成功',

@@ -6,6 +6,10 @@ Vue.use(Router);
 /* Layout */
 import Layout from '@/layout/layout';
 
+/* Router Modules */
+import chartsRouter from './modules/charts';
+import operationsRouter from '@/router/modules/operations';
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -44,7 +48,7 @@ export const constantRoutes = [
   },
   {
     path: '/login',
-    component: () => import('@/views/login/index'),
+    component: () => import('@/views/login/login'),
     hidden: true
   },
 
@@ -83,39 +87,64 @@ export const asyncRoutes = [
     path: '/system',
     component: Layout,
     redirect: '/system/user',
-    alwaysShow: true, // will always show the root menu
+    // will always show the root menu
+    alwaysShow: true,
     name: 'System',
-    meta: {
-      title: '系统管理',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
+    // you can set roles in root nav
+    meta: { title: '系统管理', icon: 'lock', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'permission',
         component: () => import('@/views/system/permission'),
         name: 'PermissionSystem',
-        meta: {
-          title: '权限管理',
-          roles: ['admin']
-        }
+        meta: { title: '权限管理', icon: 'user', roles: ['admin'] }
       },
       {
         path: 'user',
         component: () => import('@/views/system/user'),
         name: 'UserSystem',
-        meta: {
-          title: '用户管理'
-        }
+        meta: { title: '用户管理', icon: 'peoples' }
       },
       {
         path: 'data',
         component: () => import('@/views/system/data'),
         name: 'DataSystem',
-        meta: {
-          title: '数据管理',
-          roles: ['admin']
-        }
+        meta: { title: '数据管理', icon: 'data', roles: ['admin'] }
+      }
+    ]
+  },
+
+  operationsRouter,
+  chartsRouter,
+
+  {
+    path: '/article',
+    component: Layout,
+    redirect: '/article/list',
+    name: 'Article',
+    meta: {
+      title: '文章',
+      icon: 'article'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/article/create'),
+        name: 'CreateArticle',
+        meta: { title: '创建文章', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/article/edit'),
+        name: 'EditArticle',
+        meta: { title: '编辑文章', activeMenu: '/article/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/article/list'),
+        name: 'ArticleList',
+        meta: { title: '文章列表', icon: 'list' }
       }
     ]
   },
@@ -125,40 +154,37 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/nested/menu1',
     name: 'Nested',
-    meta: {
-      title: '菜单',
-      icon: 'nested'
-    },
+    meta: { title: '菜单', icon: 'nested' },
     children: [
       {
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
-        meta: { title: '子菜单1' },
+        meta: { title: '子菜单1', icon: 'nested' },
         children: [
           {
             path: 'menu1-1',
             component: () => import('@/views/nested/menu1/menu1-1'),
             name: 'Menu1-1',
-            meta: { title: '子菜单1-1' }
+            meta: { title: '子菜单1-1', icon: 'nested' }
           },
           {
             path: 'menu1-2',
             component: () => import('@/views/nested/menu1/menu1-2'),
             name: 'Menu1-2',
-            meta: { title: '子菜单1-2' },
+            meta: { title: '子菜单1-2', icon: 'nested' },
             children: [
               {
                 path: 'menu1-2-1',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
                 name: 'Menu1-2-1',
-                meta: { title: '子菜单1-2-1' }
+                meta: { title: '子菜单1-2-1', icon: 'nested' }
               },
               {
                 path: 'menu1-2-2',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
                 name: 'Menu1-2-2',
-                meta: { title: '子菜单1-2-2' }
+                meta: { title: '子菜单1-2-2', icon: 'nested' }
               }
             ]
           },
@@ -166,7 +192,7 @@ export const asyncRoutes = [
             path: 'menu1-3',
             component: () => import('@/views/nested/menu1/menu1-3'),
             name: 'Menu1-3',
-            meta: { title: '子菜单1-3' }
+            meta: { title: '子菜单1-3', icon: 'nested' }
           }
         ]
       },
@@ -174,7 +200,7 @@ export const asyncRoutes = [
         path: 'menu2',
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
-        meta: { title: '子菜单2' }
+        meta: { title: '子菜单2', icon: 'nested' }
       }
     ]
   },
