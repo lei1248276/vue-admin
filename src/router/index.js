@@ -4,7 +4,7 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 /* Layout */
-import Layout from '@/layout/layout';
+import Layout from '@/layout';
 
 /* Router Modules */
 import chartsRouter from './modules/charts';
@@ -42,13 +42,13 @@ export const constantRoutes = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/redirect')
+        component: () => import('@/views/redirect')
       }
     ]
   },
   {
     path: '/login',
-    component: () => import('@/views/login/login'),
+    component: () => import('@/views/login'),
     hidden: true
   },
 
@@ -65,9 +65,24 @@ export const constantRoutes = [
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/dashboard/dashboard'),
+      component: () => import('@/views/dashboard'),
       meta: { title: '首页', icon: 'dashboard', affix: true }
     }]
+  },
+
+  {
+    path: '/profile',
+    component: Layout,
+    redirect: '/profile/index',
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/profile/index'),
+        name: 'Profile',
+        meta: { title: '个人中心', icon: 'user', noCache: true }
+      }
+    ]
   },
 
   {
@@ -212,7 +227,7 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'Form',
-        component: () => import('@/views/form/form'),
+        component: () => import('@/views/form'),
         meta: { title: '表单', icon: 'form' }
       }
     ]

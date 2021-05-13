@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination/Pagination';
+import Pagination from '@/components/Pagination';
 
 export default {
   name: 'Server',

@@ -7,6 +7,7 @@
       class="login-form"
       auto-complete="on"
       label-position="left"
+      @keyup.enter.native="handleLogin"
     >
 
       <div class="title-container">

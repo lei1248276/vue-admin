@@ -153,7 +153,7 @@
 <script>
 import { createArticle, fetchList } from '@/api/article';
 import { parseTime } from '@/utils';
-import Pagination from '@/components/Pagination/Pagination';
+import Pagination from '@/components/Pagination';
 import { validPhoneNum, validEmail } from '@/utils/validate';
 
 export default {

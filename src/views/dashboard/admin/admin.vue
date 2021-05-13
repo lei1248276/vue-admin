@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import GithubCorner from '@/components/GithubCorner/GithubCorner';
+import GithubCorner from '@/components/GithubCorner';
 import PanelGroup from './components/PanelGroup';
 import LineChart from './components/LineChart';
 import RadarChart from './components/RadarChart';

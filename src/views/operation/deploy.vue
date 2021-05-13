@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.cname" placeholder="输入名称或IP搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.cname" placeholder="输入应用名称查询" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-date-picker
         v-model="dateValue"
         class="filter-item"
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination/Pagination';
+import Pagination from '@/components/Pagination';
 
 export default {
   name: 'Deploy',

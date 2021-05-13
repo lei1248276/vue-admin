@@ -149,7 +149,7 @@
 <script>
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article';
 import { parseTime } from '@/utils';
-import Pagination from '@/components/Pagination/Pagination'; // secondary package based on el-pagination
+import Pagination from '@/components/Pagination'; // secondary package based on el-pagination
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: '中国（CN）' },

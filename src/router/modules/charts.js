@@ -1,6 +1,6 @@
 /** When your routing table is too long, you can split it into small modules**/
 
-import Layout from '@/layout/layout';
+import Layout from '@/layout';
 
 const chartsRouter = {
   path: '/charts',
