@@ -1,5 +1,6 @@
 # vue-admin
-- 采用vue-admin-template [模板](http://panjiachen.github.io/vue-admin-template) 进行的二次开发
+- 采用vue-admin-template [模板](https://github.com/PanJiaChen/vue-admin-template) 进行的二次开发
+- [在线体验](https://adminjaye.vercel.app)
 
 ## Build Setup
 
